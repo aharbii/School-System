@@ -412,6 +412,7 @@ void string_print_permutation_recursive(char *s, int k)
 
 void string_scan(char s[], int size)
 {
+    fflush(stdin);
     int i = 0;
     do
     {

@@ -54,7 +54,6 @@ void add_student(School *school)
     Student new_student;
     int level;
     int class;
-    fflush(stdin);
     do
     {
         new_student = init_student;
