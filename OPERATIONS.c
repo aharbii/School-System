@@ -45,6 +45,7 @@ void student_add_score(Student *current_student)
         printf("'s score in Chemistry: ");
         scanf("%d", &current_student->scores.chemistry);
     } while (((current_student->scores.chemistry > 100) || (current_student->scores.chemistry < 0)) && printf("Score range is [0: 100], Please! enter a valid score\n"));
+    current_student->got_scores = true;
 }
 
 void add_student(School *school)
@@ -140,18 +141,18 @@ void student_insert(Student *students_array, int students_count, Student new_stu
     students_array[i + 1] = new_student;
 }
 
-void student_delete(Class class, int index)
+void student_delete(Class *class, int index)
 {
     /* O(n) */
-    if ((index >= 0) && (index <= class.students_count - 1))
+    if ((index >= 0) && (index <= class->students_count - 1))
     {
         Student init_student = {.name = {0}, .id = 0, .age = 0, .scores = {0, 0, 0, 0, 0}, .got_scores = 0};
-        class.students[index] = init_student;
-        for (int i = index; i < (class.students_count - 1); i++)
+        class->students[index] = init_student;
+        for (int i = index; i < (class->students_count - 1); i++)
         {
-            class.students[i] = class.students[i + 1];
+            class->students[i] = class->students[i + 1];
         }
-        class.students_count -= 1;
+        class->students_count -= 1;
     }
 }
 
@@ -259,6 +260,7 @@ void edit_level_grades(School *school, int level)
     for (int i = 0; i < CLASSES_LEN; i++)
     {
         edit_class_grades(school, level, i);
+        printf("\n\n");
     }
     
 }
@@ -268,6 +270,7 @@ void edit_school_grades(School *school)
     for (int i = 0; i < LEVELS_LEN; i++)
     {
         edit_level_grades(school, i);
+        printf("\n\n");
     }
 }
 
@@ -321,18 +324,18 @@ void edit_student(Student *student, int class, int level, School *school, int id
             printf("Enter new class: ");
             int new_class = 0;
             scanf("%d", &new_class);
-            student_delete(school->levels[level].classes[class], idx);
+            student_delete(&school->levels[level].classes[class], idx);
             student_insert(school->levels[level].classes[new_class].students, school->levels[level].classes[new_class].students_count, temp);
             break;
         case 6:
             printf("Enter new Level: ");
             int new_level = 0;
             scanf("%d", &new_level);
-            student_delete(school->levels[level].classes[class], idx);
+            student_delete(&school->levels[level].classes[class], idx);
             student_insert(school->levels[new_level].classes[class].students, school->levels[new_level].classes[class].students_count, temp);
             break;
         case 7:
-            student_delete(school->levels[level].classes[class], idx);
+            student_delete(&school->levels[level].classes[class], idx);
             break;
         case 8:
             status = CLOSE_APP;
@@ -441,7 +444,13 @@ int manipulate_operations(School *school)
         printf("1. Enter grades for all school\n");
         printf("2. Enter grades for a level\n");
         printf("3. Enter grades for a class\n");
-        scanf("%d", &choiceB);
+        printf("Enter your choice: ");
+        int choiceB = 0;
+        do
+        {
+            scanf("%d", &choiceB);
+        } while (((choiceB > 9) || (choiceB < 1)) && printf("Sorry, Invalid Input\n"));
+        printf("\n\n");
         switch (choiceB)
         {
         case 1:
@@ -450,18 +459,25 @@ int manipulate_operations(School *school)
         case 2:
             printf("Enter level number: ");
             scanf("%d", &levelD);
+            levelD -= 1;
             edit_level_grades(school, levelD);
             break;
         case 3:
             printf("Enter level number: ");
             scanf("%d", &levelE);
+            levelE -= 1;
             printf("Enter class number: ");
             scanf("%d", &classE);
+            classE -= 1;
             edit_class_grades(school, levelE, classE);
             break;
         default:
             break;
         }
+        break;
+    case 8:
+        system("clear");
+        ui_splash_screen();
         break;
     default:
         break;

@@ -104,6 +104,7 @@ int ui_menu(void)
     printf("5. Add New Student\n");
     printf("6. Search for Student\n");
     printf("7. Add Grades\n");
+    printf("8. Clear Console\n");
 
 
     printf("Enter your choice: ");
@@ -111,7 +112,7 @@ int ui_menu(void)
     do
     {
         scanf("%d", &choice);
-    } while (((choice > 8) || (choice < 1)) && printf("Sorry, Invalid Input\n"));
+    } while (((choice > 9) || (choice < 1)) && printf("Sorry, Invalid Input\n"));
     return choice;
 }
 
