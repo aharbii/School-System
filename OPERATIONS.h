@@ -9,7 +9,7 @@
 void student_add_score(Student *current_student);
 void add_student(School *school);
 void student_insert(Student *students_array, int students_count, Student new_student);
-void student_delete(Class class, int index);
+void student_delete(Class *class, int index);
 void school_init(School *school);
 char grade_numerical_conversion(int score);
 int student_found(School school, char *to_find);
